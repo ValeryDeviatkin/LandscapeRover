@@ -20,7 +20,7 @@ namespace LandscapeRover.GraphManager.Services
             {
                 for (var j = 0; j < matrixSize; j++)
                 {
-                    matrix[i, j] = random.Next(minValue, maxValue);
+                    matrix[i, j] = random.Next(minValue, maxValue + 1);
                 }
             }
 

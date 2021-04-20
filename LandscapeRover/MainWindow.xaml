@@ -5,6 +5,8 @@
         xmlns:mc = "http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels = "clr-namespace:LandscapeRover.ViewModels.ViewModels;assembly=LandscapeRover.ViewModels"
         xmlns:viewModels1 = "clr-namespace:LandscapeRover.ViewModels;assembly=LandscapeRover.ViewModels"
+        xmlns:converters = "clr-namespace:LandscapeRover.Converters"
+        xmlns:constants = "clr-namespace:LandscapeRover.Common.Constants;assembly=LandscapeRover.Common"
         mc:Ignorable = "d"
         Title = "Landscape Rover"
         ResizeMode = "NoResize"
@@ -34,10 +36,13 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text = "{Binding Mode=OneTime}"
-                               VerticalAlignment = "Center"
-                               HorizontalAlignment = "Center"
-                               TextAlignment = "Center" />
+                    <Grid
+                        Background = "{Binding Converter={converters:IntToAboveSeaColor Max={x:Static constants:MatrixConstants.MaxValue}}, Mode=OneTime}">
+                        <TextBlock Text = "{Binding Mode=OneTime}"
+                                   VerticalAlignment = "Center"
+                                   HorizontalAlignment = "Center"
+                                   TextAlignment = "Center" />
+                    </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
