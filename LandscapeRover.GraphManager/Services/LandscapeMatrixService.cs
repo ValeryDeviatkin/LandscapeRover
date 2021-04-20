@@ -1,4 +1,5 @@
 ﻿using System;
+using LandscapeRover.Common.Constants;
 using LandscapeRover.GraphManager.Interfaces;
 using LandscapeRover.GraphManager.Items;
 
@@ -8,7 +9,7 @@ namespace LandscapeRover.GraphManager.Services
     {
         public int[,] GenerateMatrix(int matrixSize, int minValue, int maxValue)
         {
-            if (matrixSize < 0 || minValue > maxValue)
+            if (matrixSize < MatrixConstants.MinSize || minValue > maxValue)
             {
                 throw new NotSupportedException();
             }
@@ -29,6 +30,15 @@ namespace LandscapeRover.GraphManager.Services
 
         public MatrixWayItem[] CalculateShortestWays(int[,] matrix)
         {
+            var minSize = MatrixConstants.MinSize;
+            var rowCount = matrix.GetLength(0);
+            var columnCount = matrix.GetLength(1);
+
+            if (rowCount < minSize || columnCount < minSize)
+            {
+                throw new NotSupportedException();
+            }
+
             return new[]
             {
                 new MatrixWayItem
