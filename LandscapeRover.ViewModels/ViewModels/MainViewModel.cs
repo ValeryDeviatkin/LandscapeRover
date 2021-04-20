@@ -20,7 +20,7 @@ namespace LandscapeRover.ViewModels.ViewModels
 
         public MainViewModel(IUnityContainer container) : base(container)
         {
-            MatrixSize = MatrixConstants.Size;
+            MatrixSize = MatrixConstants.MaxSize;
         }
 
         public ObservableRangeCollection<MatrixWayItem> ShortestWays { get; } =
