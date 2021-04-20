@@ -40,6 +40,8 @@ namespace LandscapeRover
 
         protected override void RegisterTypes()
         {
+            base.RegisterTypes();
+
             GraphManagerInitializer.Initialize(Container);
         }
     }

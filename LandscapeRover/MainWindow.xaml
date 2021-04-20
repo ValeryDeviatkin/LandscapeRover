@@ -7,13 +7,17 @@
         xmlns:viewModels1 = "clr-namespace:LandscapeRover.ViewModels;assembly=LandscapeRover.ViewModels"
         xmlns:converters = "clr-namespace:LandscapeRover.Converters"
         xmlns:constants = "clr-namespace:LandscapeRover.Common.Constants;assembly=LandscapeRover.Common"
+        xmlns:i = "http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:behaviors = "clr-namespace:LandscapeRover.Behaviors"
+        xmlns:items = "clr-namespace:LandscapeRover.GraphManager.Items;assembly=LandscapeRover.GraphManager"
         mc:Ignorable = "d"
         Title = "Landscape Rover"
         ResizeMode = "NoResize"
         WindowStartupLocation = "CenterScreen"
         WindowStyle = "None"
         WindowState = "Maximized"
-        Background = "CadetBlue">
+        Background = "CadetBlue"
+        x:Name = "Root">
 
     <d:Window.DataContext>
         <viewModels:MainViewModel />
@@ -25,27 +29,31 @@
             <ColumnDefinition Width = "*" />
         </Grid.ColumnDefinitions>
 
-        <ItemsControl Grid.Column = "0"
-                      ItemsSource = "{Binding MatrixCells, Mode=OneTime}"
-                      Width = "{Binding RelativeSource={RelativeSource Self}, Mode=OneWay, Path=ActualHeight}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <UniformGrid Columns = "{Binding MatrixSize, Mode=OneWay}"
-                                 Rows = "{Binding MatrixSize, Mode=OneWay}" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Grid
-                        Background = "{Binding Converter={converters:IntToAboveSeaColor Max={x:Static constants:MatrixConstants.MaxValue}}, Mode=OneTime}">
-                        <TextBlock Text = "{Binding Mode=OneTime}"
-                                   VerticalAlignment = "Center"
-                                   HorizontalAlignment = "Center"
-                                   TextAlignment = "Center" />
-                    </Grid>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        <Grid Grid.Column = "0"
+              Width = "{Binding RelativeSource={RelativeSource Self}, Mode=OneWay, Path=ActualHeight}">
+
+            <ItemsControl ItemsSource = "{Binding MatrixCells, Mode=OneTime}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns = "{Binding MatrixSize, Mode=OneWay}"
+                                     Rows = "{Binding MatrixSize, Mode=OneWay}" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid
+                            Background = "{Binding Converter={converters:IntToAboveSeaColor Max={x:Static constants:MatrixConstants.MaxValue}}, Mode=OneTime}">
+                            <TextBlock Text = "{Binding Mode=OneTime}"
+                                       VerticalAlignment = "Center"
+                                       HorizontalAlignment = "Center"
+                                       TextAlignment = "Center" />
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Canvas x:Name = "Canvas" />
+        </Grid>
 
         <Grid Grid.Column = "1"
               Margin = "5"
@@ -57,7 +65,7 @@
                 <RowDefinition Height = "Auto" />
                 <RowDefinition Height = "5" />
                 <RowDefinition Height = "Auto" />
-                <RowDefinition Height = "*" />
+                <RowDefinition Height = "5" />
                 <RowDefinition Height = "Auto" />
                 <RowDefinition Height = "*" />
                 <RowDefinition Height = "Auto" />
@@ -72,7 +80,12 @@
 
             <ComboBox Grid.Row = "4"
                       ItemsSource = "{Binding ShortestWays, Mode=OneTime}"
-                      SelectedItem = "{Binding SelectedWay, Mode=OneTime}">
+                      SelectedItem = "{Binding SelectedWay, Mode=TwoWay}"
+                      AlternationCount = "{Binding ShortestWays.Count, Mode=OneWay}">
+                <i:Interaction.Behaviors>
+                    <behaviors:ComboBoxCommandBehavior
+                        Command = "{Binding ElementName=Root, Path=DrawWayCommand, Mode=OneTime}" />
+                </i:Interaction.Behaviors>
                 <ComboBox.Style>
                     <Style TargetType = "ComboBox">
                         <Style.Triggers>
@@ -84,11 +97,22 @@
                         </Style.Triggers>
                     </Style>
                 </ComboBox.Style>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate DataType = "items:MatrixWayItem">
+                        <TextBlock
+                            Text = "{Binding RelativeSource={RelativeSource AncestorType=ComboBox}, Path=(ComboBox.AlternationIndex), Mode=OneTime,
+                            Converter={converters:IndexDisplayConverter}}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
 
             <StackPanel Orientation = "Vertical"
-                        Grid.Row = "2">
+                        Grid.Row = "6">
                 <TextBlock Text = "{Binding SelectedWay.TotalCharge, Mode=OneWay, StringFormat='{}Total charge: {0}'}" />
+                <TextBlock Text = "{Binding SelectedWay.Steps.Length, Mode=OneWay, StringFormat='{}Step count: {0}'}" />
+                <TextBlock
+                    Text = "{Binding SelectedWay, Mode=OneWay, Converter={converters:MatrixWayDisplayConverter}}"
+                    TextWrapping = "WrapWithOverflow" />
                 <StackPanel.Style>
                     <Style TargetType = "StackPanel">
                         <Style.Triggers>

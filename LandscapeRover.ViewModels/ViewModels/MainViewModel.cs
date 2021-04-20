@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Input;
 using LandscapeRover.Common.Constants;
 using LandscapeRover.Common.Helpers;
@@ -22,8 +23,8 @@ namespace LandscapeRover.ViewModels.ViewModels
             MatrixSize = MatrixConstants.Size;
         }
 
-        public ObservableRangeCollection<MatrixShortestWayItem> ShortestWays { get; } =
-            new ObservableRangeCollection<MatrixShortestWayItem>();
+        public ObservableRangeCollection<MatrixWayItem> ShortestWays { get; } =
+            new ObservableRangeCollection<MatrixWayItem>();
 
         public ObservableRangeCollection<int> MatrixCells { get; } =
             new ObservableRangeCollection<int>();
@@ -42,13 +43,13 @@ namespace LandscapeRover.ViewModels.ViewModels
 
         #region SelectedWay: MatrixShortestWayItem
 
-        public MatrixShortestWayItem SelectedWay
+        public MatrixWayItem SelectedWay
         {
             get => _selectedWay;
             set => SetProperty(ref _selectedWay, value);
         }
 
-        private MatrixShortestWayItem _selectedWay;
+        private MatrixWayItem _selectedWay;
 
         #endregion
 
@@ -62,11 +63,16 @@ namespace LandscapeRover.ViewModels.ViewModels
         private void ExecuteGenerateMatrix(object parameter)
         {
             MatrixCells.Clear();
+            ShortestWays.Clear();
 
             var matrix = Container.Resolve<ILandscapeMatrixService>().GenerateMatrix(
                 MatrixSize, MatrixConstants.MinValue, MatrixConstants.MaxValue);
 
+            var ways = Container.Resolve<ILandscapeMatrixService>().CalculateShortestWays(matrix);
+
             MatrixCells.ReplaceAll(matrix.ToEnumerable<int>());
+            ShortestWays.ReplaceAll(ways);
+            SelectedWay = ShortestWays.FirstOrDefault();
         }
 
         #endregion

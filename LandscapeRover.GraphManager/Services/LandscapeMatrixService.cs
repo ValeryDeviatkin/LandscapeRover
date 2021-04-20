@@ -27,6 +27,28 @@ namespace LandscapeRover.GraphManager.Services
             return matrix;
         }
 
-        public MatrixShortestWayItem[] CalculateShortestWays(int[,] matrix) => throw new NotImplementedException();
+        public MatrixWayItem[] CalculateShortestWays(int[,] matrix)
+        {
+            return new[]
+            {
+                new MatrixWayItem
+                {
+                    Steps = new[]
+                    {
+                        new MatrixStepItem {Row = 0, Column = 0},
+                        new MatrixStepItem {Row = 1, Column = 0},
+                        new MatrixStepItem {Row = 1, Column = 1},
+                        new MatrixStepItem {Row = 1, Column = 2},
+                        new MatrixStepItem {Row = 1, Column = 3},
+                        new MatrixStepItem {Row = 2, Column = 3},
+                        new MatrixStepItem {Row = 2, Column = 4},
+                        new MatrixStepItem {Row = 3, Column = 4},
+                        new MatrixStepItem {Row = 4, Column = 4},
+                        new MatrixStepItem {Row = 4, Column = 3},
+                        new MatrixStepItem {Row = 4, Column = 2}
+                    }
+                }
+            };
+        }
     }
 }

@@ -17,6 +17,15 @@
                 <Setter Property = "Padding"
                         Value = "5 2 5 2" />
             </Style>
+
+            <Style TargetType = "Line">
+                <Setter Property = "Stroke"
+                        Value = "BlueViolet" />
+                <Setter Property = "StrokeThickness"
+                        Value = "1" />
+                <Setter Property = "StrokeDashArray"
+                        Value = "2 2" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </base:ApplicationBase>
