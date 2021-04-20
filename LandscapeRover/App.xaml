@@ -1,0 +1,22 @@
+﻿<base:ApplicationBase x:TypeArguments = "landscapeRover:MainWindow, viewModels:MainViewModel"
+                      x:Class = "LandscapeRover.App"
+                      xmlns = "http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x = "http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:base = "clr-namespace:Senticode.Wpf.Base;assembly=Senticode.Wpf"
+                      xmlns:viewModels = "clr-namespace:LandscapeRover.ViewModels.ViewModels;assembly=LandscapeRover.ViewModels"
+                      xmlns:landscapeRover = "clr-namespace:LandscapeRover">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <Style TargetType = "TextBlock">
+                <Setter Property = "FontSize"
+                        Value = "20" />
+            </Style>
+
+            <Style TargetType = "Button">
+                <Setter Property = "Padding"
+                        Value = "5 2 5 2" />
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</base:ApplicationBase>
