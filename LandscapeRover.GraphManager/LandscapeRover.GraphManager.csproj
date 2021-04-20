@@ -56,10 +56,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GraphManagerInitializer.cs" />
-    <Compile Include="Interfaces\ILandscapeGraphService.cs" />
+    <Compile Include="Interfaces\ILandscapeMatrixService.cs" />
     <Compile Include="Items\MatrixWayItem.cs" />
-    <Compile Include="Items\MatrixCellItem.cs" />
-    <Compile Include="Services\GraphService.cs" />
+    <Compile Include="Items\MatrixStepItem.cs" />
+    <Compile Include="Services\LandscapeMatrixService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LandscapeRover.Common\LandscapeRover.Common.csproj">
+      <Project>{7EABB8E7-C0F3-42AC-A0B0-A14D10F2EFD8}</Project>
+      <Name>LandscapeRover.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

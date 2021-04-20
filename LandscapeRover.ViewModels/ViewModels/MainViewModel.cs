@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Windows.Input;
+using LandscapeRover.Common.Constants;
+using LandscapeRover.Common.Helpers;
+using LandscapeRover.GraphManager.Interfaces;
 using LandscapeRover.GraphManager.Items;
 using Senticode.Wpf.Base;
 using Senticode.Wpf.Collections;
@@ -16,13 +19,26 @@ namespace LandscapeRover.ViewModels.ViewModels
 
         public MainViewModel(IUnityContainer container) : base(container)
         {
+            MatrixSize = MatrixConstants.Size;
         }
-
-        public ObservableRangeCollection<MatrixCellViewModel> MatrixCells { get; } =
-            new ObservableRangeCollection<MatrixCellViewModel>();
 
         public ObservableRangeCollection<MatrixShortestWayItem> ShortestWays { get; } =
             new ObservableRangeCollection<MatrixShortestWayItem>();
+
+        public ObservableRangeCollection<int> MatrixCells { get; } =
+            new ObservableRangeCollection<int>();
+
+        #region MatrixSize: int
+
+        public int MatrixSize
+        {
+            get => _matrixSize;
+            set => SetProperty(ref _matrixSize, value);
+        }
+
+        private int _matrixSize;
+
+        #endregion
 
         #region SelectedWay: MatrixShortestWayItem
 
@@ -45,7 +61,12 @@ namespace LandscapeRover.ViewModels.ViewModels
 
         private void ExecuteGenerateMatrix(object parameter)
         {
-            // TODO: Handle command logic here
+            MatrixCells.Clear();
+
+            var matrix = Container.Resolve<ILandscapeMatrixService>().GenerateMatrix(
+                MatrixSize, MatrixConstants.MinValue, MatrixConstants.MaxValue);
+
+            MatrixCells.ReplaceAll(matrix.ToEnumerable<int>());
         }
 
         #endregion

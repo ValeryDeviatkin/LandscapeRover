@@ -9,7 +9,7 @@ namespace LandscapeRover.GraphManager
         public static void Initialize(IUnityContainer container)
         {
             container
-               .RegisterSingleton<ILandscapeGraphService, GraphService>()
+               .RegisterSingleton<ILandscapeMatrixService, LandscapeMatrixService>()
                 ;
         }
     }

@@ -43,6 +43,8 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Compile Include="Constants\MatrixConstants.cs" />
+    <Compile Include="Helpers\ArrayHelper.cs" />
     <Compile Include="Interfaces\IDesktopClientManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
