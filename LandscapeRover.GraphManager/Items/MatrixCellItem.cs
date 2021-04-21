@@ -1,6 +1,6 @@
 ﻿namespace LandscapeRover.GraphManager.Items
 {
-    public class MatrixStepItem
+    public class MatrixCellItem
     {
         public int Row { get; internal set; }
         public int Column { get; internal set; }

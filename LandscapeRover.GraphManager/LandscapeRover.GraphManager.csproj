@@ -58,7 +58,7 @@
     <Compile Include="GraphManagerInitializer.cs" />
     <Compile Include="Interfaces\ILandscapeMatrixService.cs" />
     <Compile Include="Items\MatrixWayItem.cs" />
-    <Compile Include="Items\MatrixStepItem.cs" />
+    <Compile Include="Items\MatrixCellItem.cs" />
     <Compile Include="Services\LandscapeMatrixService.cs" />
   </ItemGroup>
   <ItemGroup>

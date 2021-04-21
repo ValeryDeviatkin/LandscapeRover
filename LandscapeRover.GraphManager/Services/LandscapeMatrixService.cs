@@ -45,7 +45,7 @@ namespace LandscapeRover.GraphManager.Services
             CalculateWaysRecursive(
                 matrix,
                 ways,
-                new List<MatrixStepItem> {new MatrixStepItem {Row = 0, Column = 0}},
+                new List<MatrixCellItem> {new MatrixCellItem {Row = 0, Column = 0}},
                 new HashSet<string>());
 
             var minCharge = ways.Min(x => x.TotalCharge);
@@ -57,23 +57,33 @@ namespace LandscapeRover.GraphManager.Services
 
         private static void CalculateWaysRecursive(int[,] matrix,
                                                    ICollection<MatrixWayItem> ways,
-                                                   IReadOnlyList<MatrixStepItem> passedSteps,
-                                                   ICollection<string> blockedSteps)
+                                                   IReadOnlyList<MatrixCellItem> passedCells,
+                                                   ICollection<string> blockedCells)
         {
-            var currentStep = passedSteps[passedSteps.Count - 1];
+            var currentCell = passedCells[passedCells.Count - 1];
             var rowCount = matrix.GetLength(0);
             var columnCount = matrix.GetLength(1);
 
-            if (currentStep.Column == columnCount - 1 && currentStep.Row == rowCount - 1)
+            if (currentCell.Column == columnCount - 1 && currentCell.Row == rowCount - 1)
             {
-                var way = new MatrixWayItem {Steps = passedSteps};
+                var way = new MatrixWayItem {Cells = passedCells};
 
-                for (var i = 0; i < way.Steps.Count - 1; i++)
+                //
+                var x = matrix[0, 0];
+
+                for (var i = 0; i < columnCount; i++)
                 {
-                    var step = way.Steps[i];
-                    var nextStep = way.Steps[i + 1];
-                    var value = matrix[step.Row, step.Column];
-                    var nextValue = matrix[nextStep.Row, nextStep.Column];
+                    matrix[0, i] = x;
+                    matrix[i, columnCount - 1] = x;
+                }
+                //
+
+                for (var i = 0; i < way.Cells.Count - 1; i++)
+                {
+                    var cell = way.Cells[i];
+                    var nextCell = way.Cells[i + 1];
+                    var value = matrix[cell.Row, cell.Column];
+                    var nextValue = matrix[nextCell.Row, nextCell.Column];
 
                     way.TotalCharge += 1 + Math.Abs(value - nextValue);
                 }
@@ -83,55 +93,55 @@ namespace LandscapeRover.GraphManager.Services
                 return;
             }
 
-            var availableSteps = new List<MatrixStepItem>();
+            var availableCells = new List<MatrixCellItem>();
 
-            if (currentStep.Row > 0)
+            if (currentCell.Row > 0)
             {
-                TryGetAvailableStep(currentStep.Row - 1, currentStep.Column, blockedSteps, availableSteps);
+                TryGetAvailableCell(currentCell.Row - 1, currentCell.Column, blockedCells, availableCells);
             }
 
-            if (currentStep.Row < rowCount - 1 && currentStep.Column < columnCount - 1)
+            if (currentCell.Row < rowCount - 1 && currentCell.Column < columnCount - 1)
             {
-                TryGetAvailableStep(currentStep.Row + 1, currentStep.Column, blockedSteps, availableSteps);
+                TryGetAvailableCell(currentCell.Row + 1, currentCell.Column, blockedCells, availableCells);
             }
 
-            if (currentStep.Column > 0 && currentStep.Row < rowCount - 1)
+            if (currentCell.Column > 0 && currentCell.Row < rowCount - 1)
             {
-                TryGetAvailableStep(currentStep.Row, currentStep.Column - 1, blockedSteps, availableSteps);
+                TryGetAvailableCell(currentCell.Row, currentCell.Column - 1, blockedCells, availableCells);
             }
 
-            if (currentStep.Column < columnCount - 1)
+            if (currentCell.Column < columnCount - 1)
             {
-                TryGetAvailableStep(currentStep.Row, currentStep.Column + 1, blockedSteps, availableSteps);
+                TryGetAvailableCell(currentCell.Row, currentCell.Column + 1, blockedCells, availableCells);
             }
 
-            foreach (var step in availableSteps)
+            foreach (var availableCell in availableCells)
             {
-                var nextPassedSteps = new List<MatrixStepItem>(passedSteps) {step};
-                var nextBlockedSteps = new HashSet<string>(blockedSteps) {GetMatrixCellKey(currentStep)};
+                blockedCells.Add(GetMatrixCellKey(availableCell));
+            }
 
-                foreach (var availableStep in availableSteps)
-                {
-                    nextBlockedSteps.Add(GetMatrixCellKey(availableStep));
-                }
+            foreach (var cell in availableCells)
+            {
+                var nextPassedCells = new List<MatrixCellItem>(passedCells) {cell};
+                var nextBlockedCells = new HashSet<string>(blockedCells) {GetMatrixCellKey(currentCell)};
 
-                CalculateWaysRecursive(matrix, ways, nextPassedSteps, nextBlockedSteps);
+                CalculateWaysRecursive(matrix, ways, nextPassedCells, nextBlockedCells);
             }
         }
 
-        private static void TryGetAvailableStep(
+        private static void TryGetAvailableCell(
             int row,
             int column,
-            ICollection<string> blockedSteps,
-            ICollection<MatrixStepItem> availableSteps)
+            ICollection<string> blockedCells,
+            ICollection<MatrixCellItem> availableCells)
         {
-            if (!blockedSteps.Contains(GetMatrixCellKey(row, column)))
+            if (!blockedCells.Contains(GetMatrixCellKey(row, column)))
             {
-                availableSteps.Add(new MatrixStepItem {Row = row, Column = column});
+                availableCells.Add(new MatrixCellItem {Row = row, Column = column});
             }
         }
 
         private static string GetMatrixCellKey(int row, int column) => $"{row} {column}";
-        private static string GetMatrixCellKey(MatrixStepItem step) => GetMatrixCellKey(step.Row, step.Column);
+        private static string GetMatrixCellKey(MatrixCellItem cell) => GetMatrixCellKey(cell.Row, cell.Column);
     }
 }

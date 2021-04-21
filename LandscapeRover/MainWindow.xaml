@@ -106,7 +106,7 @@
             <StackPanel Orientation = "Vertical"
                         Grid.Row = "6">
                 <TextBlock Text = "{Binding SelectedWay.TotalCharge, Mode=OneWay, StringFormat='{}Total charge: {0}'}" />
-                <TextBlock Text = "{Binding SelectedWay.Steps.Count, Mode=OneWay, StringFormat='{}Step count: {0}'}" />
+                <TextBlock Text = "{Binding SelectedWay.Cells.Count, Mode=OneWay, StringFormat='{}Cell count: {0}'}" />
                 <TextBlock
                     Text = "{Binding SelectedWay, Mode=OneWay, Converter={converters:MatrixWayDisplayConverter}}"
                     TextWrapping = "WrapWithOverflow" />
