@@ -109,10 +109,12 @@ namespace LandscapeRover.GraphManager.Services
                 blockedCells.Add(GetMatrixCellKey(availableCell));
             }
 
+            blockedCells.Add(GetMatrixCellKey(currentCell));
+
             foreach (var cell in availableCells)
             {
                 var nextPassedCells = new List<MatrixCellItem>(passedCells) {cell};
-                var nextBlockedCells = new HashSet<string>(blockedCells) {GetMatrixCellKey(currentCell)};
+                var nextBlockedCells = new HashSet<string>(blockedCells);
 
                 CalculateWaysRecursive(matrix, ways, nextPassedCells, nextBlockedCells);
             }
