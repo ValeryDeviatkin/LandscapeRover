@@ -67,16 +67,7 @@ namespace LandscapeRover.GraphManager.Services
             if (currentCell.Column == columnCount - 1 && currentCell.Row == rowCount - 1)
             {
                 var way = new MatrixWayItem {Cells = passedCells};
-
-                //
-                var x = matrix[0, 0];
-
-                for (var i = 0; i < columnCount; i++)
-                {
-                    matrix[0, i] = x;
-                    matrix[i, columnCount - 1] = x;
-                }
-                //
+                ways.Add(way);
 
                 for (var i = 0; i < way.Cells.Count - 1; i++)
                 {
@@ -88,8 +79,6 @@ namespace LandscapeRover.GraphManager.Services
                     way.TotalCharge += 1 + Math.Abs(value - nextValue);
                 }
 
-                ways.Add(way);
-
                 return;
             }
 
@@ -100,12 +89,12 @@ namespace LandscapeRover.GraphManager.Services
                 TryGetAvailableCell(currentCell.Row - 1, currentCell.Column, blockedCells, availableCells);
             }
 
-            if (currentCell.Row < rowCount - 1 && currentCell.Column < columnCount - 1)
+            if (currentCell.Row < rowCount - 1)
             {
                 TryGetAvailableCell(currentCell.Row + 1, currentCell.Column, blockedCells, availableCells);
             }
 
-            if (currentCell.Column > 0 && currentCell.Row < rowCount - 1)
+            if (currentCell.Column > 0)
             {
                 TryGetAvailableCell(currentCell.Row, currentCell.Column - 1, blockedCells, availableCells);
             }
