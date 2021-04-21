@@ -80,8 +80,7 @@
 
             <ComboBox Grid.Row = "4"
                       ItemsSource = "{Binding ShortestWays, Mode=OneTime}"
-                      SelectedItem = "{Binding SelectedWay, Mode=TwoWay}"
-                      AlternationCount = "{Binding ShortestWays.Count, Mode=OneWay}">
+                      SelectedItem = "{Binding SelectedWay, Mode=TwoWay}">
                 <i:Interaction.Behaviors>
                     <behaviors:ComboBoxCommandBehavior
                         Command = "{Binding ElementName=Root, Path=DrawWayCommand, Mode=OneTime}" />
@@ -99,9 +98,7 @@
                 </ComboBox.Style>
                 <ComboBox.ItemTemplate>
                     <DataTemplate DataType = "items:MatrixWayItem">
-                        <TextBlock
-                            Text = "{Binding RelativeSource={RelativeSource AncestorType=ComboBox}, Path=(ComboBox.AlternationIndex), Mode=OneTime,
-                            Converter={converters:IndexDisplayConverter}}" />
+                        <TextBlock Text = "{Binding Converter={converters:HashCodeConverter}}" />
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
@@ -109,7 +106,7 @@
             <StackPanel Orientation = "Vertical"
                         Grid.Row = "6">
                 <TextBlock Text = "{Binding SelectedWay.TotalCharge, Mode=OneWay, StringFormat='{}Total charge: {0}'}" />
-                <TextBlock Text = "{Binding SelectedWay.Steps.Length, Mode=OneWay, StringFormat='{}Step count: {0}'}" />
+                <TextBlock Text = "{Binding SelectedWay.Steps.Count, Mode=OneWay, StringFormat='{}Step count: {0}'}" />
                 <TextBlock
                     Text = "{Binding SelectedWay, Mode=OneWay, Converter={converters:MatrixWayDisplayConverter}}"
                     TextWrapping = "WrapWithOverflow" />

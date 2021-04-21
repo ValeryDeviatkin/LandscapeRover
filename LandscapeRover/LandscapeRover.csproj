@@ -92,7 +92,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Behaviors\ComboBoxCommandBehavior.cs" />
-    <Compile Include="Converters\IndexDisplayConverter.cs" />
+    <Compile Include="Converters\HashCodeConverter.cs" />
     <Compile Include="Converters\IntToAboveSeaColor.cs" />
     <Compile Include="Converters\MatrixWayDisplayConverter.cs" />
     <Compile Include="MainWindow.xaml.cs">

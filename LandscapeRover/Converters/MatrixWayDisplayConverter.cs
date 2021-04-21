@@ -15,12 +15,12 @@ namespace LandscapeRover.Converters
             {
                 var stringBuilder = new StringBuilder();
 
-                for (var i = 0; i < way.Steps.Length; i++)
+                for (var i = 0; i < way.Steps.Count; i++)
                 {
                     var step = way.Steps[i];
                     stringBuilder.Append($"[{step.Row}][{step.Column}]");
 
-                    if (i != way.Steps.Length - 1)
+                    if (i != way.Steps.Count - 1)
                     {
                         stringBuilder.Append("-> ");
                     }

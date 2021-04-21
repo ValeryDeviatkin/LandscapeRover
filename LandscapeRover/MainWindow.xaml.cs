@@ -36,17 +36,17 @@ namespace LandscapeRover
             var lineLength = Canvas.ActualHeight / mainViewModel.MatrixSize;
             var offset = lineLength * 0.5d;
 
-            for (var i = 0; i < way.Steps.Length - 1; i++)
+            for (var i = 0; i < way.Steps.Count - 1; i++)
             {
                 var step = way.Steps[i];
                 var nextStep = way.Steps[i + 1];
 
                 Canvas.Children.Add(new Line
                 {
-                    X1 = offset + lineLength * step.Row,
-                    X2 = offset + lineLength * nextStep.Row,
-                    Y1 = offset + lineLength * step.Column,
-                    Y2 = offset + lineLength * nextStep.Column
+                    Y1 = offset + lineLength * step.Row,
+                    Y2 = offset + lineLength * nextStep.Row,
+                    X1 = offset + lineLength * step.Column,
+                    X2 = offset + lineLength * nextStep.Column
                 });
             }
         }

@@ -5,13 +5,13 @@ using System.Windows.Markup;
 
 namespace LandscapeRover.Converters
 {
-    internal class IndexDisplayConverter : MarkupExtension, IValueConverter
+    internal class HashCodeConverter : MarkupExtension, IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is int index)
+            if (value != null)
             {
-                return index + 1;
+                return value.GetHashCode();
             }
 
             throw new NotSupportedException();
